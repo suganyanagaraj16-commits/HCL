@@ -1,0 +1,25 @@
+name: Build and Push
+on: 
+  push:
+    branches: [main]
+env:
+  REGISTRY: ${{ secrets.CONTAINER_REGISTRY }}
+  IMAGE_TAGL $${{ github.number}}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout source
+       uses: actions/checkout@v1
+    
+      -name: Install 
+        run:
+          npm install --prefix patient-service
+
+      - name: Build docker Image
+        run: docker build -t $REGISTRY/patient-service:${IMAGE_TAG}
+
+      -name : Push docker Image
+        run: docker push $REGISTRY/patient-service:${IMAGE_TAG}
