@@ -38,7 +38,7 @@ Stages {
             sh """
             gcloud auth activate-service-account --key-file=$GCP_KEY"
             gcloud auth configure-docker 
-            gcloud beta run deploy package 
+            gcloud beta run deploy package --project  $PROJECT_ID --image $REGISTRY/order-service:$IMAGE _TAG  --vpc-connector VPC --timeout  --region-us-central1 --serviceaccount=svc 
             }
           
           
