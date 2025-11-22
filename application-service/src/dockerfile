@@ -1,9 +1,29 @@
-FROM npm
-WORDIR /app
-RUN npm --only DEV
-COPY . .
-ENV NODE_ENV=DEV
-EXPOSE 3030
-HEALTHCHECK --interval=15s --timeout-5s --retries3 https://healthcare/app:3030/health
+# Use the official Node.js image from Docker Hub as the base
+FROM node:latest  
 
-CMD ["node" ,"index.js"]
+# Set the working directory inside the container to /app
+WORKDIR /app  
+
+# Install dependencies; 
+RUN npm install --only=dev  
+
+# Copy all files from the current directory on the host into /app in the container
+COPY . .  
+
+# Set environment variable NODE_ENV to "DEV"
+# This can be used by Node.js apps to switch behavior between dev/prod
+ENV NODE_ENV=DEV  
+
+# Expose port 3030 so it can be mapped from the host
+EXPOSE 3030  
+
+# Define a health check for the container:
+# - Runs every 15 seconds
+# - Times out after 5 seconds
+# - Retries 3 times before marking container unhealthy
+
+HEALTHCHECK --interval=15s --timeout=5s --retries=3 \
+  CMD curl -f http://localhost:3030/health || exit 1  
+
+# Default command to run when the container starts
+CMD ["node", "index.js"]
