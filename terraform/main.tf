@@ -13,3 +13,8 @@ resource "google_compute_subnetwork" "vpc_subnet" {
   region        = var.gcp_region
   network       = google_compute_network.vpc_network.name
 }
+resource "google_project_iam_member" "member" {
+  project = var.project_id
+  role    = var.role
+  member  = var.member
+}
