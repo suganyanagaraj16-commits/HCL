@@ -1,6 +1,6 @@
 variable "project_id {}
-variable 'region" {
-default ="us-cental1"
+variable "region" {  
+  defult ="us-cental1"
 }
 variable "env"
 {
