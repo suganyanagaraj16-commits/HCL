@@ -33,16 +33,25 @@ Stages {
             """
             }
           }
-          stage('Deploy to kubernetes using kubectl)
+          stage('Deploy to kubernetes using kubectl as CloudRun)
             step {
             withCredentials([file(credentialsIsID:"gke-key",variables:'GCP_key')])
             sh """
             gcloud auth activate-service-account --key-file=$GCP_KEY"
             gcloud auth configure-docker 
             gcloud beta run deploy package --project  $PROJECT_ID --image $REGISTRY/order-service:$IMAGE _TAG  --vpc-connector VPC --timeout  --region-us-central1 --serviceaccount=svc 
+            """
             }
           
-          
+          stage("Deploy to kubernetes")
+            step {
+            sh"""
+            gcloud container cluster get-crendentials gke-clusetr -region=us-central1 --project $PROJECT_ID
+            kubectl apply -f patient-service/src/patient-deployment.yaml
+            """
+
+            
+          }}
             
         
   
