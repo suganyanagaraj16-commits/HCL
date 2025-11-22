@@ -1,0 +1,48 @@
+pipeline {
+ageny any{
+environment {
+  PROJECT_ID = "HCL-Hackathon
+  REGISTRY ="gcr.io/hclhackthaon"
+  IMAGE_TAG="v${env.BUILD_NUMBER}"
+  KUMBE_NAMESPACE="microservices"
+}
+Stages {
+  stage ('checkout') {
+   steps {
+     git "https://github.com/suganyanagaraj16-commits/HCL-hackathon.git"
+     }
+  }
+  stage ("Build microservices") {
+    withCredentials([file(credentialsIsID:gcr-jso-key;, variables: 'GCP_KEY)])
+    {
+      //Authentication GCP
+      sh """
+      gcloud auth activate=service-account
+      """
+     parallel {
+        stage ('Build and Push Service') {
+           steps {
+            script {
+            docker.withRegister("https://$REGISTRY", gcr-credentials') {
+            //Path for the dockerfile
+            sh """docker build -f docker patient-service/src/Dockerfile -t $REGISTRY/patient-service:$IMAGE_TAG 
+            docker push $REGISTRY/patient-service:$IMAGE _TAG
+            docker build -f docker order-service/src/Dockerfile -t $REGISTRY/patient-service:$IMAGE_TAG 
+            docker push $REGISTRY/order-service:$IMAGE _TAG
+            """
+            }
+          }
+          stage('Deploy to kubernetes using kubectl)
+            step {
+            withCredentials([file(credentialsIsID:"gke-key",variables:'GCP_key')])
+            sh """
+            gcloud auth activate-service-account --key-file=$GCP_KEY"
+            gcloud auth configure-docker 
+            gcloud beta run deploy package 
+            }
+          
+          
+            
+        
+  
+     
