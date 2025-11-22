@@ -1,0 +1,6 @@
+project_id  = "HCL-Hackathon"
+region      = "us-central1"
+vpc_name    = "dev-vpc"
+subnet_cidr = "10.0.0.0/24"
+role        = "roles/viewer"
+member      = "suganya:dev-user@example.com"
