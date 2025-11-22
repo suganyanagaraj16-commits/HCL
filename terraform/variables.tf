@@ -1,7 +1,3 @@
-variable "project_id {}
-variable "region" {  
-  defult ="us-cental1"
-}
 variable "env"
 {
   default =" dev"
