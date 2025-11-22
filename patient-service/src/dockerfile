@@ -1,0 +1,9 @@
+FROM npm
+WORDIR /app
+RUN npm --only DEV
+COPY . .
+ENV NODE_ENV=DEV
+EXPOSE 3031
+HEALTHCHECK --interval=15s --timeout-5s --retries3 https://healthcare/patient:3030/health
+
+CMD ["node" ,"index.js"]
