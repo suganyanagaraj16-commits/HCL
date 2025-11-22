@@ -13,11 +13,12 @@ Stages {
      }
   }
   stage ("Build microservices") {
-    withCredentials([file(credentialsIsID:gcr-jso-key;, variables: 'GCP_KEY)])
+    //withCredentials([file(credentialsIsID:gcr-jso-key;, variables: 'GCP_KEY)])
     {
       //Authentication GCP
       sh """
-      gcloud auth activate=service-account
+      gcloud auth activate=service-account --key-file=$GCP_KEY
+      gcloud  auth configure-docker --quiet
       """
      parallel {
         stage ('Build and Push Service') {
